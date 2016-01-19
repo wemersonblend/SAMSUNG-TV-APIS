@@ -1,5 +1,5 @@
 var fs;
-var defaultDir = '/mtd_down/common/testeDir';
+var defaultDir = '/workdir';
 
 mkdirTxt.value = defaultDir;
 rmTxt.value = defaultDir;
@@ -12,6 +12,9 @@ listDirTxt.value = defaultDir;
 window.onload = function () {
 	window.widgetAPI = new Common.API.Widget();
     window.widgetAPI.sendReadyEvent();
+
+    defaultDir = window.widgetAPI.id;
+    _log("defaultDir", defaultDir, window.widgetAPI);
 
 	fs =  new Filesystem({
 		sefPlugin : document.querySelector('#SefPlugin'),
@@ -68,9 +71,10 @@ function mkdir(){
 	var path = mkdirTxt.value;
 
 	_log('mkdir path', path);
-	fs.mkdir(path, function(error, data){
+	fs.mkdir(path, {}, function(error, data){
 		if(error)
-			_log('error', error);
+			return _log('error', error);
+
 		_log('data', data);
 	})
 }
@@ -81,7 +85,8 @@ function rmdir(){
 	_log('rmdir path', path);
 	fs.rmdir(path, {recursive: true}, function(error, data){
 		if(error)
-			_log('error', error);
+			return _log('error', error);
+
 		_log('data', data);
 	})
 }
@@ -93,7 +98,8 @@ function rmfile(){
 	_log('rmfile path', path);
 	fs.rm(path, {recursive: true}, function(error, data){
 		if(error)
-			_log('error', error);
+			return _log('error', error);
+
 		_log('data', data);
 
 	})
@@ -106,7 +112,8 @@ function writefile(){
 	_log('writefile path', path);
 	fs.writeFile(path, text, function(error, data){
 		if(erro)
-			_log('error', error);
+			return _log('error', error);
+
 		_log('data', data);
 	})
 }
@@ -117,7 +124,8 @@ function readfile(){
 	_log('readfile path', path);
 	fs.readFile(path, function(error, data){
 		if(error)
-			_log('error', error);
+			return _log('error', error);
+
 		_log('data', data);
 	})
 }
@@ -129,7 +137,9 @@ function listdir(){
 	_log('listdir path', path);
 	fs.ls(path, function(error, data){
 		if(error)
-			_log('error', error);
+			return _log('error', error);
+
+
 		_log('data', data);
 	})
 }

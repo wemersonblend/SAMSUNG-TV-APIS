@@ -8,23 +8,20 @@
      * @param {String} projPath Caminho do projeto
      */
     function Filesystem(options, callback) {
-        _log(options);
         this.FILE_SYSTEM_PLUGIN = options.fileSystemPlugin;
         this.SEF_PLUGIN = options.sefPlugin;
-        this.SEF_PLUGIN.Open('FileSystem', '1.000', 'FileSystem');
         this.FILE_SYSTEM = new FileSystem();
     }
 
-    Filesystem.prototype.init = function init(callback) {
-        _log('FileSystem Init');
-        _log(this.FILE_SYSTEM_PLUGIN);
-        _log('FileSystem__');
-        _log(this.FILE_SYSTEM, typeof this.FILE_SYSTEM.openCommonFile);
+    Filesystem.prototype.init = function init(options, callback) {
+        if(!this.FILE_SYSTEM_PLUGIN)
+            this.FILE_SYSTEM_PLUGIN = options.fileSystemPlugin;
+        if(!this.SEF_PLUGIN)
+            this.SEF_PLUGIN = options.sefPlugin;
+        if(!this.FILE_SYSTEM)
+            this.FILE_SYSTEM = new FileSystem();
 
-        // if(!this.FileSystemPlugin)
-        //     this.FileSystemPlugin = document.querySelector('#FileSystemPlugin');
-
-        // _log(FileSystemPlugin);
+        callback({success: true});
     }
 
     /**
@@ -32,17 +29,25 @@
      *
      * @method mkdir
      * @param {string} path
+     * @param {object} options || callback
      * @param {function} callback
      */
     Filesystem.prototype.mkdir = function (path, options, callback) {
-        if(!this.FILE_SYSTEM)
-           return console.warn('Filesystem API not initialized');
-
+        if(!this.FILE_SYSTEM) {
+           return callback({message: 'Filesystem API not initialized'}, null);
+        }
         if(!path)
            return callback({message: 'Invalid dir path'}, null);
 
-        var createdDir = this.FILE_SYSTEM.createCommonDir(path);
-        callback( null, createdDir);
+        if(typeof options == 'function')
+            callback = options;
+
+        try {
+            var createdDir = this.FILE_SYSTEM.createCommonDir(path);
+            callback( null, createdDir);
+        } catch (err) {
+            callback({message: err}, null);
+        }
     }
 
     /**
@@ -50,17 +55,32 @@
      *
      * @method rmdir
      * @param {string} path
-     * @param {object} options
+     * @param {object} options || callback
      * @param {function} callback
      */
     Filesystem.prototype.rmdir = function (path, options, callback) {
+
+
         if(!this.FILE_SYSTEM)
            return console.warn('Filesystem API not initialized');
 
         if(!path)
            return callback({message: 'Invalid dir path'}, null);
 
-        var removedDir = this.FILE_SYSTEM.deleteCommonDir(path);
+        if(typeof options == 'function') {
+            callback = options;
+            options = {recursive : false};
+        }
+        var removedDir;
+
+        try {
+            removedDir = this.FILE_SYSTEM.deleteCommonDir(path);
+        } catch (err) {
+            return callback({
+                error: err,
+                message: 'Internal Error'
+            }, null);
+        }
         callback(null, removedDir);
     }
 
@@ -99,12 +119,22 @@
      * @param {function} callback
      */
     Filesystem.prototype.readFile = function (filePath, callback) {
+        var isValidPath;
 
-        if(!filePath)
-            return callback({message: 'Invalid file filePath'}, null);
+        isValidPath = this.FILE_SYSTEM.isValidCommonPath(filePath);
+        if(!filePath || !isValidPath)
+            return callback({message: 'Invalid filePath'}, null);
 
-        var fileObj = this.FILE_SYSTEM.openCommonFile(filePath, 'r');
-        var strResult = fileObj.readAll();
+        try{
+            var fileObj = this.FILE_SYSTEM.openCommonFile(filePath, 'r');
+            var strResult = fileObj.readAll();
+        }catch (err) {
+            return callback({
+                error: err,
+                data: strResult,
+                message: 'Internal Error'
+            }, null);
+        }
 
         if(!strResult)
             return callback(strResult, null);
@@ -167,16 +197,44 @@
      * @return {array}             Outputs an array of objects
      */
     Filesystem.prototype.ls = function ls(path, callback) {
+        var list;
+        if (path[0] !== '/') {
+            path = '/' + path;
+        }
+
+        path = '/mtd_down/common' + path;
+
         if(!this.FILE_SYSTEM_PLUGIN)
             return console.warn('Filesystem API not initialized');
 
         if(!path)
            return callback({message: 'Invalid file path'}, null);
 
-        var list = this.SEF_PLUGIN.Execute("GetListFiles", path + '/');
+        try {
 
-        if(typeof(callback))
+            this.SEF_PLUGIN.Open('FileSystem', '1.000', 'FileSystem');
+            this.SEF_PLUGIN.Execute('SetWidgetInfo', 2, path);
+            list = this.SEF_PLUGIN.Execute("GetListFiles", path);
+
+        } catch(err) {
+            return callback({
+                error: err,
+                message: 'Internal Error'
+            }, null);
+        }
+
+        if(!list || list.length == 0)
+            return callback({message: 'Invalid Path'}, null);
+
+        list = JSON.parse(list);
+        list.pop(); // remove the 0 element from array
+
+        if(callback)
             callback(null, list);
+
+        function (){
+
+        }
     }
 
     _global.Filesystem = Filesystem;

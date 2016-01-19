@@ -6,8 +6,11 @@
 		Plugin:function(){}}
 	}
 
-	if(!global.Common) {
+	if(!global.Common)
 		global.Common = Common;
-	}
+
+	if(!global.FileSystem)
+		global.FileSystem = function(){};
+
 })( this )
 
