@@ -53,10 +53,10 @@
     }
 
     function sendLog(strLog) {
-        var xmlhttp = new XMLHttpRequest();
-        var url = "http://requestb.in/104q6yp1";
-        xmlhttp.open("POST", url, true);
-        xmlhttp.send(strLog);
+        // var xmlhttp = new XMLHttpRequest();
+        // var url = "http://requestb.in/087a6sda";
+        // xmlhttp.open("POST", url, true);
+        // xmlhttp.send(strLog);
     }
 
     log.prototype.clear = function (){
