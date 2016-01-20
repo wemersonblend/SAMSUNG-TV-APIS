@@ -20,9 +20,10 @@
      * @param  {Function} callback [description]
      */
     Unzipper.prototype.start = function init(options, callback) {
-        var zipped;
-        this.FROM_PATH = options.from;
+        var zipped, error = null, folder;
+        this.FROM_PATH = normalizePath(options.from);
         this.TO_PATH = normalizePath(options.to);
+        this.FOLDER_NAME = options.folder || extractFileFromPath(this.FROM_PATH).split('.')[0];
 
         _log('paths', this.FROM_PATH, this.TO_PATH);
 
@@ -33,16 +34,29 @@
             return callback({message: 'invalid arguments. Required {from:"", to: ""}'});
 
         try {
-            zipped = this.FILE_SYSTEM_PLUGIN.Unzip(this.FROM_PATH, this.TO_PATH + '/test');
-            _log('1 zipped', zipped);
-            return callback(null, zipped);
+            zipped = this.FILE_SYSTEM_PLUGIN.Unzip(this.FROM_PATH, this.TO_PATH + '/' + this.FOLDER_NAME);
+
+            if(zipped < 0) {
+                error = {
+                    error: zipped,
+                    message: 'Error when trying to uncompress. File path exists?'
+                }
+                zipped = false;
+                return callback(error, zipped);
+            }
+
+            if(zipped == 0) {
+                zipped = true;
+                return callback(null, zipped);
+            }
+
         } catch(error) {
-            _log('error zipped', error);
             return callback({
                 error: error,
                 message: 'Internal error'
             }, null);
         }
+
     }
 
      /**

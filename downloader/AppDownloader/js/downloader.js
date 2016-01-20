@@ -47,9 +47,9 @@
 
 
             if (strList[0] == '1000' && strList[1] == '1')
-                return callback(null, {success: true});
+                return callback(null, true);
 
-            return callback({message: 'Download Failed!'});
+            return callback({message: 'Download Failed!'}, false);
         }
 
 
