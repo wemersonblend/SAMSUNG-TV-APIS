@@ -33,9 +33,9 @@
      * @param {function} callback
      */
     Filesystem.prototype.mkdir = function (path, options, callback) {
-        if(!this.FILE_SYSTEM) {
+        if(!this.FILE_SYSTEM)
            return callback({message: 'Filesystem API not initialized'}, null);
-        }
+
         if(!path)
            return callback({message: 'Invalid dir path'}, null);
 
@@ -59,10 +59,10 @@
      * @param {function} callback
      */
     Filesystem.prototype.rmdir = function (path, options, callback) {
-
+        var that = this;
 
         if(!this.FILE_SYSTEM)
-           return console.warn('Filesystem API not initialized');
+           return callback({message: 'Filesystem API not initialized'}, null);
 
         if(!path)
            return callback({message: 'Invalid dir path'}, null);
@@ -94,10 +94,10 @@
      */
     Filesystem.prototype.rm = function (filePath, options, callback) {
         if(!this.FILE_SYSTEM)
-           return console.warn('Filesystem API not initialized');
+           return callback({message: 'Filesystem API not initialized'}, null);
 
         if(!filePath)
-           return callback({message: 'Invalid file filePath'}, null);
+           return callback({message: 'File not Found'}, null);
 
        if(typeof options == 'function')
             callback = options;
@@ -105,7 +105,7 @@
         var removedFile = this.FILE_SYSTEM.deleteCommonFile(filePath);
 
         if(!removedFile)
-            return callback(removedFile, null);
+            return callback(removedFile, false);
 
         callback(null, removedFile);
 
@@ -165,7 +165,6 @@
         var fileObj = this.FILE_SYSTEM.openCommonFile( filePath , 'w' );
         fileObj.writeAll(data);
         this.FILE_SYSTEM.closeCommonFile(fileObj);
-
         callback(null, fileObj);
     }
 
@@ -179,8 +178,8 @@
      */
     Filesystem.prototype.renameFile = function(filePath, newFilePath, callback) {
 
-        if(!this.FILE_SYSTEM)
-           return console.warn('Filesystem API not initialized');
+        if(!this.FILE_SYSTEM_PLUGIN)
+           return callback({message: 'Filesystem Plugin not initialized'}, null);
 
         if(!filePath)
            return callback({message: 'Invalid dir filePath'}, null);
@@ -198,6 +197,10 @@
      */
     Filesystem.prototype.ls = function ls(path, callback) {
         var list;
+
+        if(!path)
+           return callback({message: 'Invalid file path'}, null);
+
         if (path[0] !== '/') {
             path = '/' + path;
         }
@@ -205,10 +208,7 @@
         path = '/mtd_down/common' + path;
 
         if(!this.FILE_SYSTEM_PLUGIN)
-            return console.warn('Filesystem API not initialized');
-
-        if(!path)
-           return callback({message: 'Invalid file path'}, null);
+           return callback({message: 'Filesystem API not initialized'}, null);
 
         try {
 
@@ -223,17 +223,38 @@
             }, null);
         }
 
+        // @todo: verificar se é isso mesmo. List vazio ou com erro
+
         if(!list || list.length == 0)
             return callback({message: 'Invalid Path'}, null);
 
-        list = JSON.parse(list);
-        list.pop(); // remove the 0 element from array
-
         if(callback)
-            callback(null, list);
+            callback(null, listToObject(list));
 
-        function (){
+        function listToObject (list){
+            var item, newlist = [];
 
+            if(!list)
+                return [];
+
+            try{
+                if(typeof list != 'object')
+                    list = JSON.parse(list);
+
+                list.pop(); // remove the 0 element from array
+            } catch (err) {
+                list = [];
+            }
+
+            for (var i = 0; i < list.length; i++) {
+                newlist.push({
+                    name : list[i],
+                    isDirectory: (list[i].indexOf('.') > 0) ? false : true,
+                    isFile: (list[i].indexOf('.') > 0) ? true : false
+                });
+            }
+
+            return newlist;
         }
     }
 

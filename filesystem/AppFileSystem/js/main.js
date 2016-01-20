@@ -111,7 +111,7 @@ function writefile(){
 
 	_log('writefile path', path);
 	fs.writeFile(path, text, function(error, data){
-		if(erro)
+		if(error)
 			return _log('error', error);
 
 		_log('data', data);
@@ -138,7 +138,6 @@ function listdir(){
 	fs.ls(path, function(error, data){
 		if(error)
 			return _log('error', error);
-
 
 		_log('data', data);
 	})
