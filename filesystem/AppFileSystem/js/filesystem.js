@@ -1,7 +1,7 @@
 (function(_global) {
 
     /**
-     * Classe para manipular arquivos em disco no chrome
+     * Classe to manipulate filesystem
      *
      * @class Filesystem
      * @constructor
@@ -71,7 +71,27 @@
             callback = options;
             options = {recursive : false};
         }
-        var removedDir;
+
+        if(typeof callback != 'function')
+            callback = function(){return;};
+
+        options = options || {recursive: false};
+        options.recursive = options.recursive || false;
+
+        that.ls(path, function(error, fileList){
+            var file, hasDirectory = false;
+
+            for (var i = 0; i < fileList.length; i++) {
+                file = fileList[i];
+
+                if(file.isDirectory) {
+                    that.rmdir(path + '/' + file.name, {recursive: true});
+                } else {
+                    that.rm(path + '/' + file.name);
+                }
+            }
+
+        });
 
         try {
             removedDir = this.FILE_SYSTEM.deleteCommonDir(path);
@@ -99,8 +119,11 @@
         if(!filePath)
            return callback({message: 'File not Found'}, null);
 
-       if(typeof options == 'function')
+        if(typeof options == 'function')
             callback = options;
+
+        if(typeof callback != 'function')
+            callback = function(){};
 
         var removedFile = this.FILE_SYSTEM.deleteCommonFile(filePath);
 
