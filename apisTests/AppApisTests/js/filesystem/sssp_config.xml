@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget>
-	<ver>1.3931328127</ver>
+	<ver>1.35613008</ver>
 	<size>100</size>
-	<widgetname>AppDownloader</widgetname>
+	<widgetname>AppFileSystem</widgetname>
 </widget>

@@ -1,0 +1,91 @@
+
+<!doctype html>
+<html>
+<head>
+	<title>Test All Samsung Apis</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<script type="text/javascript" language="javascript" src="$MANAGER_WIDGET/Common/API/Widget.js"></script>
+	<script type="text/javascript" language="javascript" src="$MANAGER_WIDGET/Common/API/TVKeyValue.js"></script>
+
+	<object id="DownloaderPlugin" classid="clsid:SAMSUNG-INFOLINK-DOWNLOAD"></object>
+	<object id="FileSystemPlugin" classid="clsid:SAMSUNG-INFOLINK-FILESYSTEM"></object>
+	<object id="SefPlugin" classid="clsid:SAMSUNG-INFOLINK-SEF"></object>
+
+	<style type="text/css">body {background-color: #fff;padding: 50px;}input {width: 350px;}textarea {font-size: 12px;}	</style>
+
+</head>
+<body>
+	<textarea id="debug" style="display: none; position: absolute; height: 300px; width: 50%; top 20px; right: 20px; top: 20px; z-index: 999999999; background-color: rgba(255, 255, 255, 0.9);"></textarea>
+
+	<!-- FILESYSTEM -->
+
+	<div>
+		<h3>FileSystem</h3>
+		<button id="init">1 init</button>
+		<br />
+		<br />
+		<button id="mkdir">2 mkdir</button>
+		<input type="text" name="" id="mkdirTxt">
+
+		<br />
+		<br />
+		<button id="rmdir">3 rmdir</button>
+		<input type="text" name="" id="rmTxt">
+
+		<br />
+		<br />
+		<button id="rmfile">4 rm</button>
+		<input type="text" name="" id="rmfileTxt">
+
+		<br />
+		<br />
+		<button id="writefile">5 writeFile</button>
+		<input type="text" name="" id="writefileTxt">
+		<input type="text" name="" id="writefileDataTxt">
+
+		<br />
+		<br />
+		<button id="readfile">6 readFile</button>
+		<input type="text" name="" id="readfileTxt">
+
+		<br />
+		<br />
+		<button id="listDir">7 listDir</button>
+		<input type="text" name="" id="listDirTxt">
+
+	</div>
+
+	<!-- DOWNLOADER -->
+
+	<div>
+		<br />
+		<h3>Downloader</h3>
+		<hr />
+		<br />
+		<button id="writefile">8 downloader</button>
+		<input type="text" name="" id="urlfileTxt" style="width: 450px">
+		<input type="text" name="" id="pathfileTxt">
+
+	</div>
+
+	<!-- UNZIPPER -->
+
+	<div>
+		<br />
+		<h3>Unzipper</h3>
+		<hr />
+		<br />
+		<button id="writefile">9 Unzipper</button>
+		<input type="text" name="" id="fromTxt" style="width: 450px">
+		<input type="text" name="" id="toTxt">
+
+	</div>
+
+	<script src="js/debug.js"></script>
+	<script src="js/samsung_mock.js"></script>
+	<script src="js/filesystem/AppFileSystem/js/filesystem.js"></script>
+	<script src="js/unzipper/AppUnzipper/js/unzipper.js"></script>
+	<script src="js/downloader/AppDownloader/js/downloader.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>

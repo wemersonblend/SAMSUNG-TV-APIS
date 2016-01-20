@@ -25,6 +25,10 @@
             this.TO_PATH = this.TO_PATH + '/' + filename;
         }
 
+        _log('filename', filename);
+        _log('TO_PATH', this.TO_PATH);
+        _log('FROM_URL', this.FROM_URL);
+
         this.onComplete = options.onComplete || function(){};
         if(!this.DOWNLOADER_PLUGIN)
            return callback({message: 'Download require sefPlugin'});

@@ -224,10 +224,11 @@
         if(!path)
            return callback({message: 'Invalid file path'}, null);
 
-        path = (path[0] == '/') ? path :  '/' + path;
-        if(path != '/mtd_down' && path != '/mtd_down/')
-            path = path.match('/mtd_down/common') ? path : '/mtd_down/common' + path;
+        if (path[0] !== '/') {
+            path = '/' + path;
+        }
 
+        path = '/mtd_down/common' + path;
 
         if(!this.FILE_SYSTEM_PLUGIN)
            return callback({message: 'Filesystem API not initialized'}, null);
@@ -278,46 +279,6 @@
 
             return newlist;
         }
-    }
-
-    /**
-     * Convert path string to correct format
-     * @param  {String} pathString [description]
-     * @example            normalizePath('/mtd_down')          /mtd_down
-     * @example            normalizePath('/mtd_down/common')   /mtd_down/common
-     * @example            normalizePath('/mtd_down/anyone')   /mtd_down/anyone
-     * @example            normalizePath('/test')              /mtd_down/common/test
-     * @return {String}
-     */
-    function normalizePath (pathString) {
-
-        pathString = (pathString[0] == '/')    ?    pathString    :    '/' + pathString;
-        pathString = (pathString[pathString.length -1] == '/')    ?    pathString.substring(0, pathString.length-1)    :    pathString;
-
-        if(!pathString.match('/mtd_down'))
-            pathString = pathString.match('/mtd_down/common') ? pathString : '/mtd_down/common' + pathString;
-
-
-        return pathString;
-    }
-
-    /**
-     * Extract file from path or URL
-     * @return {String} file.txt
-     */
-    function extractFileFromPath(pathString) {
-        var file;
-
-        if(typeof pathString != 'string')
-            return '';
-
-        pathString = pathString.split('/');
-        file = pathString[pathString.length-1];
-
-        if(file.indexOf('.') > -1)
-            return file;
-        else
-            return '';
     }
 
     _global.Filesystem = Filesystem;
