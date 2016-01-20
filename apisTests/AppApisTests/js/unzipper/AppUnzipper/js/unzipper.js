@@ -12,6 +12,7 @@
     function Unzipper(options, callback) {
         this.FILE_SYSTEM_PLUGIN = options.fileSystemPlugin;
         this.SEF_PLUGIN = options.sefPlugin;
+        this.FILE_SYSTEM = new FileSystem();
     }
 
     /**
@@ -20,21 +21,25 @@
      * @param  {Function} callback [description]
      */
     Unzipper.prototype.start = function init(options, callback) {
-        var zipped, error = null, folder;
-        this.FROM_PATH = normalizePath(options.from);
-        this.TO_PATH = normalizePath(options.to);
-        this.FOLDER_NAME = options.folder || extractFileFromPath(this.FROM_PATH).split('.')[0];
+        var FROM_PATH,
+            TO_PATH,
+            FOLDER_NAME,
+            zipped,
+            error = null,
+            folder;
 
-        _log('paths', this.FROM_PATH, this.TO_PATH);
+        FROM_PATH = normalizePath(options.from);
+        TO_PATH = normalizePath(options.to);
+        FOLDER_NAME = options.folder || extractFileFromPath(FROM_PATH).split('.')[0];
 
         if(!this.FILE_SYSTEM_PLUGIN)
            return callback({message: 'Download require sefPlugin'});
 
-        if(!this.FROM_PATH || !this.TO_PATH)
+        if(!FROM_PATH || !TO_PATH)
             return callback({message: 'invalid arguments. Required {from:"", to: ""}'});
 
         try {
-            zipped = this.FILE_SYSTEM_PLUGIN.Unzip(this.FROM_PATH, this.TO_PATH + '/' + this.FOLDER_NAME);
+            zipped = this.FILE_SYSTEM_PLUGIN.Unzip(FROM_PATH, TO_PATH + '/' + FOLDER_NAME);
 
             if(zipped < 0) {
                 error = {

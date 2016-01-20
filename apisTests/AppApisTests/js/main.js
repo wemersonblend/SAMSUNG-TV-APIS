@@ -162,12 +162,13 @@ function listdir(){
 		_log('data', data);
 	});
 
-	// fs.ls('/mtd_down', function(error, data){
-	// 	if(error)
-	// 		return _log('error', error);
+	fs.ls(path + '/mixPlaylistApp', function(error, data){
+		if(error)
+			return _log('error', error);
 
-	// 	_log('data', data);
-	// });
+		_log('data', data);
+	});
+
 
 	// fs.ls('/mtd_down/common', function(error, data){
 	// 	if(error)
