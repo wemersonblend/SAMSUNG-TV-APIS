@@ -14,27 +14,29 @@
 
     Downloader.prototype.start = function start(options, callback) {
 
-        var filename;
+        var TO_PATH,
+            FROM_URL,
+            filename;
 
-        this.TO_PATH = normalizePath(options.path);
-        this.FROM_URL = options.url;
+        TO_PATH = normalizePath(options.path);
+        FROM_URL = options.url;
 
-        filename = extractFileFromPath(this.TO_PATH);
+        filename = extractFileFromPath(TO_PATH);
         if(!filename) {
-            filename = extractFileFromPath(this.FROM_URL);
-            this.TO_PATH = this.TO_PATH + '/' + filename;
+            filename = extractFileFromPath(FROM_URL);
+            TO_PATH = TO_PATH + '/' + filename;
         }
 
         this.onComplete = options.onComplete || function(){};
         if(!this.DOWNLOADER_PLUGIN)
            return callback({message: 'Download require sefPlugin'});
 
-        if(!this.FROM_URL || !this.TO_PATH)
+        if(!FROM_URL || !TO_PATH)
             return callback({message: 'invalid arguments. Required {url:"", path: ""}'});
 
         try {
             this.DOWNLOADER_PLUGIN.OnComplete = '__onDownloadEvent';
-            var downloaded = this.DOWNLOADER_PLUGIN.StartDownFile(this.FROM_URL, this.TO_PATH);
+            var downloaded = this.DOWNLOADER_PLUGIN.StartDownFile(FROM_URL, TO_PATH);
         } catch(error) {
             return callback({
                 error: error,

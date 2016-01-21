@@ -146,7 +146,7 @@
 
         isValidPath = this.FILE_SYSTEM.isValidCommonPath(filePath);
         if(!filePath || !isValidPath)
-            return callback({message: 'Invalid filePath'}, null);
+            return callback({message: 'File Not Found'}, null);
 
         try{
             var fileObj = this.FILE_SYSTEM.openCommonFile(filePath, 'r');

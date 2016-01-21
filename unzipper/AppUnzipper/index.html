@@ -1,0 +1,39 @@
+
+<!doctype html>
+<html>
+<head>
+	<title>Unziper Sample App</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<script type="text/javascript" language="javascript" src="$MANAGER_WIDGET/Common/API/Widget.js"></script>
+	<script type="text/javascript" language="javascript" src="$MANAGER_WIDGET/Common/API/TVKeyValue.js"></script>
+
+	<object id="FileSystemPlugin" classid="clsid:SAMSUNG-INFOLINK-FILESYSTEM"></object>
+	<object id="SefPlugin" classid="clsid:SAMSUNG-INFOLINK-SEF"></object>
+
+	<style type="text/css">
+		body {
+			background-color: #fff;
+			padding: 50px;
+		}
+		input {
+			width: 250px;
+		}
+
+	</style>
+
+</head>
+<body>
+	<textarea id="debug" style="display: none; position: absolute; height: 300px; width: 50%; top 20px; right: 20px; top: 20px; z-index: 999999999; background-color: rgba(255, 255, 255, 0.9);"></textarea>
+	<div>
+		<button id="writefile">1 Unzipper</button>
+		<input type="text" name="" id="fromTxt" style="width: 450px">
+		<input type="text" name="" id="toTxt">
+
+	</div>
+
+	<script src="js/debug.js"></script>
+	<script src="js/samsung_mock.js"></script>
+	<script src="js/unzipper.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
