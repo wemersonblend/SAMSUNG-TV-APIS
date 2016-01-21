@@ -1,4 +1,4 @@
-var keyboard;
+var keyboard, remoteControlNavigator;
 
 
 window.onload = function () {
@@ -9,9 +9,17 @@ window.onload = function () {
     keyboard =  new Keyboard();
     keyboard.set(['input1', 'input3']);
 
-    setTimeout(function(){
+    remoteControlNavigator =  new RemoteControlNavigator({
+        selectors : '.tabindex',
+        cssClass: 'setfield',
+        onKeyReturn: function(){
+            keyboard.close();
+        }
+    });
 
-    	document.querySelector('#input1').focus();
+
+    setTimeout(function(){
+    	remoteControlNavigator.setActive('#input1');
     }, 500)
 
         var properties = []
@@ -79,77 +87,4 @@ window.onload = function () {
     }
 
 }
-var keycode;
 
-document.addEventListener("keydown", function(inEvent){
-
-
-    if(window.event) {
-        keycode = inEvent.keyCode;
-    } else if(e.which) {
-        keycode = inEvent.which;
-    }
-
-    // KEY Return
-    if(keycode == 88) {
-       keyboard.close();
-    }
-
-    if(_g_ime.curFocusObj)
-        return;
-
-    _log(keycode)
-
-    // KEY Control bottom && KEY PgDn
-    if(keycode == 29461 || keycode == 34) {
-        nextElement();
-    }
-
-    // KEY Control Up && KEY PgUp
-    if(keycode == 29460 || keycode == 33) {
-        prevElement();
-    }
-
-    // KEY Control Enter && KEY End
-    if(keycode == 29443|| keycode == 35) {
-        document.activeElement.click();
-    }
-
-
-});
-
-function nextElement(){
-    var tabindex = window.tabindex || 0;
-    var totalElements = document.querySelectorAll('.tabindex').length;
-
-    tabindex ++;
-
-    if(tabindex == totalElements) {
-        tabindex = 0;
-    }
-
-    _log(tabindex);
-    setFocus(tabindex);
-}
-
-function prevElement(){
-    var tabindex = window.tabindex || 0;
-    var totalElements = document.querySelectorAll('.tabindex').length;
-
-    tabindex --;
-
-    if(tabindex < 0) {
-        tabindex = totalElements -1;
-    }
-
-    _log(tabindex);
-    setFocus(tabindex);
-}
-
-function setFocus(tabindex) {
-    // _log( document.querySelectorAll('.tabindex'));
-    var element = document.querySelectorAll('.tabindex')[tabindex];
-
-    element.focus();
-    window.tabindex = tabindex;
-}

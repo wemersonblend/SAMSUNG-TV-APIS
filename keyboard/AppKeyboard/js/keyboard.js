@@ -22,8 +22,8 @@
         _g_ime.init("en","2_35_259_12","USA","","us");    //2_35_259_0 USA
     }
 
-    Keyboard.prototype.set = function(_inputs) {
-        inputs = _inputs || [];
+    Keyboard.prototype.set = function(inputIds) {
+        inputs = inputIds || [];
         if(typeof inputs == 'string')
             inputs = [inputs];
 
@@ -44,85 +44,8 @@
         imeobj.setKeySetFunc('qwerty');
         imeobj.setBlockSpace(true);
         imeobj.setAuto(true); //set flag for user autocomplete use or not use
-        imeobj.setEnterFunc(function(a, b){
-            _log('setEnterFunc', a, b)
-        });
 
         var strKeySet = imeobj.getKeySet();
-    }
-
-
-    // Manipulate keyboard actions
-    var keycode;
-
-    document.addEventListener("keydown", function(inEvent){
-
-        if(window.event) {
-            keycode = inEvent.keyCode;
-        } else if(e.which) {
-            keycode = inEvent.which;
-        }
-
-        // KEY Return
-        if(keycode == 88) {
-           keyboard.close();
-        }
-
-        // If Keyboard is Open Return
-        if(_g_ime.curFocusObj)
-            return;
-
-        // KEY Control bottom && KEY Control right
-        if(keycode == 29461 || keycode == 5) {
-            nextElement();
-        }
-
-        // KEY Control Up && KEY Control left
-        if(keycode == 29460 || keycode == 5) {
-            prevElement();
-        }
-
-        // KEY Control Enter && KEY End
-        if(keycode == 29443) {
-            document.activeElement.click();
-        }
-
-    });
-
-    function nextElement(){
-        var tabindex = window.tabindex || 0;
-        var totalElements = document.querySelectorAll('.tabindex').length;
-
-        tabindex ++;
-
-        if(tabindex == totalElements) {
-            tabindex = 0;
-        }
-
-        _log(tabindex);
-        setFocus(tabindex);
-    }
-
-    function prevElement(){
-        var tabindex = window.tabindex || 0;
-        var totalElements = document.querySelectorAll('.tabindex').length;
-
-        tabindex --;
-
-        if(tabindex < 0) {
-            tabindex = totalElements -1;
-        }
-
-        _log(tabindex);
-        setFocus(tabindex);
-    }
-
-    function setFocus(tabindex) {
-        // _log( document.querySelectorAll('.tabindex'));
-        var element = document.querySelectorAll('.tabindex')[tabindex];
-
-        element.focus();
-        window.tabindex = tabindex;
     }
 
     _global.Keyboard = Keyboard;

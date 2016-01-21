@@ -47,13 +47,12 @@
                     message: 'Error when trying to uncompress. File path exists?'
                 }
                 zipped = false;
-                return callback(error, zipped);
             }
 
-            if(zipped == 0) {
+            if(zipped >= 0) {
                 zipped = true;
-                return callback(null, zipped);
             }
+                return callback(error, zipped);
 
         } catch(error) {
             return callback({

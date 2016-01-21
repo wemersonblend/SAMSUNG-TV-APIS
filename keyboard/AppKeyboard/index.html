@@ -10,7 +10,7 @@
 	<script type="text/javascript" src="$MANAGER_WIDGET/Common/Plugin/Define.js"></script>
 
 
-	<style type="text/css">body {background-color: #fff;padding: 50px;}input, textarea {width: 250px; min-height: 30px;} div.span {width: 150px;}</style>
+	<style type="text/css">body {background-color: #fff;padding: 50px;} input, textarea {width: 250px; min-height: 30px;} div.span {width: 180px;} .setfield {border: 5px red dashed;}</style>
 
 </head>
 <body>
@@ -18,24 +18,31 @@
 	<div>
 		<label>
 			<div class="span">Simple input</div>
-			<input id="input1" type="text" name="" class="tabindex">
+			<input id="input1" type="text" name="" class="tabindex" tabindex="1">
 		</label>
 
+		<br />
+		<br />
 		<label>
 			<div class="span">Input Without Keyboard</div>
-			<input id="input2" type="text" name="" class="tabindex">
+			<input id="input2" type="text" name="" class="tabindex" tabindex="2">
 		</label>
 		<br />
 		<br />
 		<label>
 			<div class="span">Simple TextArea</div>
-			<textarea id="input3" class="tabindex"></textarea>
+			<textarea id="input3" class="tabindex" tabindex="3"></textarea>
 		</label>
+		<br />
+		<br />
+		<a class="tabindex" href="javascript:_log('clicou no link')" tabindex="4">link</a>
+		<button class="tabindex" onclick="_log('clicou no button')" tabindex="5">button</button>
 	</div>
 
 	<script src="js/debug.js"></script>
 	<script src="js/samsung_mock.js"></script>
 	<script src="js/keyboard.js"></script>
+	<script src="js/remoteControlNavigator.js"></script>
 	<script src="js/main.js"></script>
 	<script type="text/javascript" src="$MANAGER_WIDGET/Common/IME_XT9/ime.js"></script>
 </body>
