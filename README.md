@@ -135,6 +135,7 @@ var keyboard =  new Keyboard({
     selectors: ['.keyboard']
 });
 
+document.getElementById('input1').focus(); // open keyboard to type
 
 keyboard.close(); //Close Keyboard
 
