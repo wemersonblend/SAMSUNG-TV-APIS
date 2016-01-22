@@ -33,7 +33,7 @@
     var onKeyEnter;
 
     /**
-     * Classe to implements remote control navigation
+     * Class to implements remote control navigation
      *
      * @class RemoteControlNavigator
      * @constructor
@@ -45,6 +45,8 @@
         cssClass = options.cssClass;
         onKeyReturn = options.onKeyReturn || function(){};
         onKeyEnter = options.onKeyEnter || function(){};
+        onSetFocus = options.onSetFocus || function(){};
+        onSetInput = options.onSetInput || function(){};
 
         if(typeof selectors == 'string')
             selectors = [selectors];
@@ -59,15 +61,13 @@
             for (var j = 0; j < similarElements.length; j++) {
                 elements.push(similarElements[j]);
             }
-
-            console.log(elements[elements.length -1])
         }
 
-        for (var i = 0; i < elements.length; i++) {
-            // elements[i].onfocus = function(evt){
-            //     setField(evt.target);
-            // }
-        };
+        // for (var i = 0; i < elements.length; i++) {
+        //     elements[i].onfocus = function(evt){
+        //         setInput(evt.target);
+        //     }
+        // };
     }
 
     RemoteControlNavigator.prototype.setActive = function(selector) {
@@ -77,7 +77,7 @@
         var element;
         element = isElement(selector) ? selector : document.querySelector(selector);
 
-        setField(element);
+        setInput(element);
         setFocus(element);
     }
 
@@ -88,13 +88,15 @@
             keycode = inEvent.which;
         }
 
+        // console.log(keycode, inEvent);
+
         // KEY Return
         if(keycode == 88) {
            onKeyReturn();
         }
 
         // If Keyboard is Open Return
-        if(_g_ime.curFocusObj)
+        if(_global._g_ime.curFocusObj)
             return;
 
         // KEY Control bottom && KEY Control right
@@ -108,7 +110,7 @@
         }
 
         // KEY Control Enter && KEY End
-        if(keycode == 29443) {
+        if(keycode == 29443 || keycode == 13) {
             setFocus();
             onKeyEnter();
         }
@@ -125,7 +127,7 @@
             tabindex = 0;
         }
 
-        setField();
+        setInput();
     }
 
     /**
@@ -138,22 +140,25 @@
             tabindex = elements.length -1;
         }
 
-        setField();
+        setInput();
     }
 
     /**
      * Set active Element.
      * @param {Object} element [description]
      */
-    function setField(element) {
+    function setInput(element) {
 
         for (var i = 0; i < elements.length; i++) {
             elements[i].classList.remove(cssClass);
         };
 
-        if(isElement(element))
+        if(isElement(element)) {
+            onSetInput(element);
             return element.classList.add(cssClass);
+        }
 
+        onSetInput(elements[tabindex]);
         elements[tabindex].classList.add(cssClass);
 
     }
@@ -167,6 +172,7 @@
 
         element.click();
         element.focus();
+        onSetFocus(element);
     }
 
     /**
