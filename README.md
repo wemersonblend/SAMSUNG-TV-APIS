@@ -25,8 +25,6 @@ var fs =  new Filesystem({
     fileSystemPlugin : document.querySelector('#FileSystemPlugin')
 });
 
-fs.init();
-
 fs.mkdir('/mypath', {}, function(error, data){
     console.log('complete', error, data);
 });
