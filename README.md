@@ -61,7 +61,7 @@ Class to manage downloads
 <script type="text/javascript" language="javascript" src="$MANAGER_WIDGET/Common/API/Widget.js"></script>
 <script type="text/javascript" language="javascript" src="$MANAGER_WIDGET/Common/API/TVKeyValue.js"></script>
 
-<object id="FileSystemPlugin" classid="clsid:SAMSUNG-INFOLINK-FILESYSTEM"></object>
+<object id="FileSystemPlugin" classid="clsid:SAMSUNG-INFOLINK-DOWNLOAD"></object>
 <object id="SefPlugin" classid="clsid:SAMSUNG-INFOLINK-SEF"></object>
 
 ```
