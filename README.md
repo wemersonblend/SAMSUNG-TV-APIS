@@ -3,11 +3,19 @@
 
 Generic Apis implemented to Samsung LFD applications
 
+
+[Filesystem API](#filesystem-api)
+[Download API](#download-api)
+[Unzip API](#unzip-api)
+[Keyboard API](#keyboard-api)
+[Remote Control API](#remote-control-api)
+
+<a href="#" name="filesystem-api"></a>
 ## Filesystem API
 
 Class to handle filesystem
 
-*HTML Code*
+**HTML Code**
 ```html
 <!-- HEAD -->
 <script type="text/javascript" language="javascript" src="$MANAGER_WIDGET/Common/API/Widget.js"></script>
@@ -18,7 +26,7 @@ Class to handle filesystem
 
 ```
 
-*Javascript Code*
+**Javascript Code**
 ```javascript
 var fs =  new Filesystem({
     sefPlugin : document.querySelector('#SefPlugin'),
@@ -53,11 +61,12 @@ fs.ls(path, function(error, data){
 
 ```
 
+<a href="#" name="download-api"></a>
 ## Download API
 
 Class to manage downloads
 
-*HTML Code*
+**HTML Code**
 ```html
 <!-- HEAD -->
 <script type="text/javascript" language="javascript" src="$MANAGER_WIDGET/Common/API/Widget.js"></script>
@@ -68,7 +77,7 @@ Class to manage downloads
 
 ```
 
-*Javascript Code*
+**Javascript Code**
 ```javascript
 var downloader =  new Downloader({
     sefPlugin : document.querySelector('#SefPlugin'),
@@ -83,11 +92,12 @@ downloader.start({
 });
 ```
 
+<a href="#" name="unzip-api"></a>
 ## Unzip API
 
 Class to unzip files
 
-*HTML Code*
+**HTML Code**
 ```html
 <!-- HEAD -->
 <script type="text/javascript" language="javascript" src="$MANAGER_WIDGET/Common/API/Widget.js"></script>
@@ -98,7 +108,7 @@ Class to unzip files
 
 ```
 
-*Javascript Code*
+**Javascript Code**
 ```javascript
 var unzipper =  new Unzipper({
     sefPlugin : document.querySelector('#SefPlugin'),
@@ -113,12 +123,12 @@ unzipper.start({
 });
 
 ```
-
+<a href="#" name="keyboard-api"></a>
 ## Keyboard API
 
 Class enable keyboard in input fields
 
-*HTML Code*
+**HTML Code**
 ```html
 <!-- top of HEAD -->
 
@@ -131,7 +141,7 @@ Class enable keyboard in input fields
 <script type="text/javascript" src="$MANAGER_WIDGET/Common/IME_XT9/ime.js"></script>
 ```
 
-*Javascript Code*
+**Javascript Code**
 ```javascript
 var keyboard =  new Keyboard({
     selectors: ['.keyboard']
@@ -142,11 +152,12 @@ keyboard.close();
 
 ```
 
+<a href="#" name="remote-control-api"></a>
 ## Remote Control API
 
 Class to control input navigation with enter keys and arrow keys on remote control.
 
-*HTML Code*
+**HTML Code**
 ```html
 <!-- top of HEAD -->
 
@@ -156,7 +167,7 @@ Class to control input navigation with enter keys and arrow keys on remote contr
 <script type="text/javascript" src="$MANAGER_WIDGET/Common/Plugin/Define.js"></script>
 ```
 
-*Javascript Code*
+**Javascript Code**
 ```javascript
 var remoteControlNavigator =  RemoteControlNavigator({
     selectors : '.keyboard',
