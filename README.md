@@ -135,8 +135,8 @@ var keyboard =  new Keyboard({
     selectors: ['.keyboard']
 });
 
-Close Keyboard
-keyboard.close();
+
+keyboard.close(); //Close Keyboard
 
 ```
 
